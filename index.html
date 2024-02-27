@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мой сайт</title>
+<style>
+body, html {
+margin: 0;
+padding: 0;
+height: 100%;
+overflow: hidden; /* чтобы избежать появления полос прокрутки */
+}
+.container {
+display: flex;
+height: 100%;
+}
+.image-container {
+flex: 1;
+position: relative;
+height: 100vh; /* высота картинки на всю высоту окна браузера */
+overflow: hidden; /* чтобы избежать появления полос прокрутки */
+}
+.image {
+display: block;
+width: 100%;
+height: 100%;
+object-fit: contain; 
+}
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+width: 200px;
+background-color: #333;
+overflow-y: auto; /* чтобы при длинном списке пунктов меню была возможность прокрутки */
+}
+.main-btn {
+width: 100%;
+padding: 10px;
+border: none;
+background-color: #444;
+color: #fff;
+cursor: pointer;
+outline: none;
+}
+.submenu {
+display: none;
+position: absolute;
+top: 0;
+left: 200px; /* Расположение справа от основного меню */
+background-color: #555;
+width: 200px;
+height: 100%;
+ z-index: 1; /* Добавлено */
+}
+.submenu button {
+display: block;
+width: 100%;
+padding: 8px;
+border: none;
+background-color: #555;
+color: #fff;
+cursor: pointer;
+outline: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="sidebar">
+<button class="main-btn" onclick="toggleSubMenu('paving')">Тротуарная плитка</button>
+<button class="main-btn" onclick="toggleSubMenu('facade')">Фасадная</button>
+    <div id="pavingSubMenu" class="submenu">
+        <button onclick="toggleSubMenu(' ')">Назад</button>
+        <button onclick="toggleSubMenu('brick')">Кирпичик</button>
+        <button onclick="toggleSubMenu('manege')">Манеж</button>
+    </div>
+
+        <div id="brickSubMenu" class="submenu">
+            <button onclick="toggleSubMenu('paving')">Назад</button>
+            <button class="menu-button" onclick="addOverlay('image/4F.png')">Белый</button>
+            <button class="menu-button" onclick="addOverlay('image/3O.png')">Красный</button>
+        </div>
+
+        <div id="manegeSubMenu" class="submenu">
+            <button class="menu-button" onclick="addOverlay('image/2P.png')">Белый</button>
+            <button class="menu-button" onclick="addOverlay('image/3O.png')">Красный</button>
+        </div>
+
+    <div id="facadeSubMenu" class="submenu">
+        <button onclick="toggleSubMenu('lapsha')">Лапша</button>
+        <button onclick="toggleSubMenu('nabornaya')">Наборная</button>
+    </div>
+          <div id="lapshaSubMenu" class="submenu">
+            <button class="menu-button" onclick="addOverlay('image/2P.png')">Желтый</button>
+            <button class="menu-button" onclick="addOverlay('image/3O.png')">Черный</button>
+          </div>
+          <div id="nabornayaSubMenu" class="submenu">
+            <button class="menu-button" onclick="addOverlay('image/2P.png')">Перелив песочный</button>
+            <button class="menu-button" onclick="addOverlay('image/3O.png')">Перелив (черный+белый)</button>
+          </div>
+    </div>
+    
+<div class="image-container">
+<img src="image/1D.png" id="main-image" class="image" alt="Главная картинка">
+<div id="overlay-container" class="overlay-container"></div>
+</div> 
+</div>  
+<script>
+function toggleSubMenu(menu) {
+var subMenus = document.getElementsByClassName('submenu');
+for (var i = 0; i < subMenus.length; i++) {
+if (subMenus[i].id === menu + 'SubMenu') {
+subMenus[i].style.display = 'block';
+} else {
+subMenus[i].style.display = 'none';
+}
+}
+}
+function addOverlay(imagePath) {
+var overlayContainer = document.getElementById('overlay-container');
+overlayContainer.innerHTML = '';
+var overlayImage = document.createElement('img');
+overlayImage.src = imagePath;
+overlayImage.classList.add('image');
+overlayContainer.appendChild(overlayImage);
+}
+</script>
+</body>
+</html>
