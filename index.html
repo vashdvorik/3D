@@ -3,134 +3,487 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мой сайт</title>
+<title>3D.VD.PMR</title>
 <style>
 body, html {
-margin: 0;
-padding: 0;
-height: 100%;
-overflow: hidden; /* чтобы избежать появления полос прокрутки */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* чтобы избежать появления полос прокрутки */
 }
+
+:root {
+  --container-width: 100%; /* Задайте вашу переменную по умолчанию */
+}
+
 .container {
-display: flex;
-height: 100%;
+    display: flex;
+    height: 100%;
 }
 .image-container {
-flex: 1;
-position: relative;
-height: 100vh; /* высота картинки на всю высоту окна браузера */
-overflow: hidden; /* чтобы избежать появления полос прокрутки */
+    flex: 1;
+    position: relative;
+    height: 100vh; /* высота картинки на всю высоту окна браузера */
+    overflow: auto; /* чтобы избежать появления полос прокрутки */
+    background-color: #333; /* Цвет фона */
 }
 .image {
-display: block;
-width: 100%;
-height: 100%;
-object-fit: contain; 
+    display: block;
+    width: var(--container-width);
+    height: 100%;
+    object-fit: contain; 
 }
-.overlay-container {
+.window-overlay-container, .door-overlay-container, .krish-overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--container-width);
+    height: 100%;
+    z-index: 9;
+}
+.fasad-overlay-container, .cokol-overlay-container, .trot-overlay-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 8;
+    
+}
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    overflow-y: auto; /* чтобы при длинном списке пунктов меню была возможность прокрутки */
+}
+.sidebar .main-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #333;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    position: relative;
 }
 
-.sidebar {
-width: 200px;
-background-color: #333;
-overflow-y: auto; /* чтобы при длинном списке пунктов меню была возможность прокрутки */
+.sidebar .main-btn.active {
+    background-color: #555;
+    font-weight: bold;
+}
+
+.sidebar .main-btn.active::after {
+    content: '\276F'; /* Юникод-символ стрелочки вправо */
+    font-size: 1.2em; /* Размер шрифта стрелочки */
+    position: absolute;
+    right: 10px; /* Расстояние от правого края */
+    top: 50%; /* Центрирование вертикально */
+    transform: translateY(-50%); /* Коррекция для вертикального центрирования */
+}
+
 }
 .main-btn {
-width: 100%;
-padding: 10px;
-border: none;
-background-color: #444;
-color: #fff;
-cursor: pointer;
-outline: none;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #333;
+    
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
 }
+
+.main-btn img {
+    vertical-align: middle; /* Выравниваем изображение по вертикали посредством центрирования относительно текста */
+
+}
+
 .submenu {
-display: none;
-position: absolute;
-top: 0;
-left: 200px; /* Расположение справа от основного меню */
-background-color: #555;
-width: 200px;
-height: 100%;
- z-index: 1; /* Добавлено */
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 200px; /* Расположение справа от основного меню */
+    background-color: #555;
+    width: 200px;
+    height: 100%;
+    z-index: 10; 
+
 }
 .submenu button {
-display: block;
-width: 100%;
-padding: 8px;
-border: none;
-background-color: #555;
-color: #fff;
-cursor: pointer;
-outline: none;
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    background-color: #555;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #444;
 }
+
+#info {
+    margin-top: 0px; /* Отступ сверху */
+    padding: 1px; /* Внутренний отступ */
+    background-color: #333; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    border-radius: 5px; /* Скругление углов */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+#info .alt-layer{
+    margin-top: 10px; /* Отступ сверху */
+    margin-bottom: 10px; /* Отступ снизу */
+    font-size: 14px;
+    border: 1px solid #555;
+    padding: 5px;
+
+}
+
 </style>
 </head>
 <body>
 <div class="container">
-<div class="sidebar">
-<button class="main-btn" onclick="toggleSubMenu('paving')">Тротуарная плитка</button>
-<button class="main-btn" onclick="toggleSubMenu('facade')">Фасадная</button>
-    <div id="pavingSubMenu" class="submenu">
-        <button onclick="toggleSubMenu(' ')">Назад</button>
-        <button onclick="toggleSubMenu('brick')">Кирпичик</button>
-        <button onclick="toggleSubMenu('manege')">Манеж</button>
-    </div>
+    <div class="sidebar">
+<h3></h3>
+ <!--РЕЖИМ-->
+        <button class="main-btn" data-menu="regim" onclick="toggleSubMenu('regim')">Настройки</button>
+        <div id="regimSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
 
-        <div id="brickSubMenu" class="submenu">
-            <button onclick="toggleSubMenu('paving')">Назад</button>
-            <button class="menu-button" onclick="addOverlay('image/4F.png')">Белый</button>
-            <button class="menu-button" onclick="addOverlay('image/3O.png')">Красный</button>
+           <button onclick="toggleContainerSize()">Увеличить/Уменьшить</button>
+           <button id="fullscreen-button">Развернуть/Свернуть</button>
+
+        </div>
+ <h3></h3>
+ <!-- КРЫША-->
+        <button class="main-btn" data-menu="krish" onclick="toggleSubMenu('krish')">Крыша</button>
+        <div id="krishSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+
+            <button onclick="addKrishOverlay('image/1.Krisha/2k.png', 'Крыша - красная металочерепица')">Красная металочерепица</button>
+            <button onclick="addKrishOverlay('image/1.Krisha/1k.png', 'Крыша - черная металочерепица')">Черная металочерепица</button>
+          <!--  <button onclick="addKrishOverlay('image/1.Krisha/3k.png')">Шифер (3 года)</button>-->
+        </div>
+ <!--ОКНА-->
+        <button class="main-btn" data-menu="okno" onclick="toggleSubMenu('okno')">Окна</button>
+        <div id="oknoSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+
+            <button onclick="addWindowOverlay('image/2.Okna/belayi.png','Окна - белые')">Белые</button>
+            <button onclick="addWindowOverlay('image/2.Okna/korich.png', 'Окна - коричневые')">Коричневые</button>
+            <button onclick="addWindowOverlay('image/2.Okna/temnokorich.png', 'Окна - темнокоричневые')">Темно-коричневые</button>
+        </div>
+<!--ДВЕРИ-->
+        <button class="main-btn" data-menu="dver" onclick="toggleSubMenu('dver')">Двери</button>
+        <div id="dverSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+            <button onclick="addDoorOverlay('image/3.Dveri/belaya.png', 'Дверь - белая')">Белые</button>
+            <button onclick="addDoorOverlay('image/3.Dveri/korich.png', 'Дверь - коричневая')">Коричневые</button>
+            <button onclick="addDoorOverlay('image/3.Dveri/temnokorich.png', 'Дверь - темнокоричневая')">Темно-коричневые</button>
+        </div>
+<h3></h3>
+
+<!--ФАСАД-->
+        <button class="main-btn" data-menu="fasad" onclick="toggleSubMenu('fasad')">Фасад</button>
+        <div id="fasadSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+            <button onclick="toggleSubMenu('rvankamen')">Рваный камень</button>
+            <button onclick="toggleSubMenu('kolotiykir')">Колотый кирпичик</button>
+            <button onclick="toggleSubMenu('rostovs2')">Ростовский камень</button>
+        </div>
+    <!--РВАННЫЙ КАМЕНЬ-->
+        <div id="rvankamenSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('fasad')">&#x276E; назад</button>
+            <button onclick="addfasadOverlay('image/4.Fasad/f01cherniy.png', 'Фасад - Рваный камень - черный')">черный</button>
+        </div>
+    <!--КОЛОТЫЙ КИРПИЧИК-->
+        <div id="kolotiykirSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('fasad')">&#x276E; назад</button>
+            <button onclick="addfasadOverlay('image/4.Fasad/f05beluy.png', 'Фасад - Колотый кирпичик - белый')">белый</button>
+        </div>
+    <!--  РОСТОВСКИЙ КАМЕНЬ-->
+        <div id="rostovs2SubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('fasad')">&#x276E; назад</button>
+            <button onclick="addfasadOverlay('image/4.Fasad/f15pes.png', 'Фасад - Ростовский камень - песочный')">Песочный</button>
+        </div>   
+      
+<!--ЦОКОЛЬ-->
+        <button class="main-btn" data-menu="cokol" onclick="toggleSubMenu('cokol')">Цоколь</button>
+        <div id="cokolSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+            <button onclick="toggleSubMenu('rvankamenc')">Рваный камень</button>
+            <button onclick="toggleSubMenu('rostov')">Ростовский камень</button>
+            <button onclick="toggleSubMenu('kolotkir')">Колотый кирпичик</button>
+        </div>
+    <!--РВАНЫЙ КАМЕНЬ-->
+        <div id="rvankamencSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('cokol')">&#x276E; назад</button>
+            <button onclick="addcokolOverlay('image/5.Cokol/F01chern.png', 'Цоколь - Рваный камень - черный')">черный</button>
+        </div>
+    <!--КОЛОТЫЙ КИРПИЧИК-->
+        <div id="kolotkirSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('cokol')">&#x276E; назад</button>
+            <button onclick="addcokolOverlay('image/5.Cokol/kirpB.png','Цоколь -Колотый кирпичик - белый')">белый</button>
+        </div>    
+    <!--РОСТОВСКИЙ КАМЕНЬ-->
+        <div id="rostovSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('cokol')">&#x276E; назад</button>
+            <button onclick="addcokolOverlay('image/5.Cokol/f17pesoch.png','Цоколь - Ростовский камень - песочный')">песочный</button>
         </div>
 
-        <div id="manegeSubMenu" class="submenu">
-            <button class="menu-button" onclick="addOverlay('image/2P.png')">Белый</button>
-            <button class="menu-button" onclick="addOverlay('image/3O.png')">Красный</button>
+<!--ТРОТУАРНОЕ ПОКРЫТИЕ-->
+        <button class="main-btn" data-menu="trot" onclick="toggleSubMenu('trot')">Тротуарная плитка</button>
+        <div id="trotSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+            <button onclick="toggleSubMenu('kirp')">Кирпичик</button>
+            <button onclick="toggleSubMenu('rient')">Ориент</button>
+            <button onclick="toggleSubMenu('kolo')">Коло</button>
+            <button onclick="toggleSubMenu('romb')">Ромб</button>
+            <button onclick="toggleSubMenu('insbr')">Инсбрук</button>
+        </div>
+    <!--КИРПИЧИК-->
+        <div id="kirpSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('trot')">&#x276E; назад</button>
+            <button onclick="addtrotOverlay('image/6.Trot/kirpichkub.png','Тротуарная плитка - Кирпичик - белый+черный кубик')">белый+черный кубик</button>
+        </div>
+    <!--ОРИЕНТ-->
+        <div id="rientSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('trot')">&#x276E; назад
+            <button onclick="addtrotOverlay('image/6.Trot/orientKG.png','Тротуарная плитка - Ориент - желтый+красный')">желтый+красный</button>
+        </div>
+    <!--КОЛО-->
+        <div id="koloSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('trot')">&#x276E; назад</button>
+            <button onclick="addtrotOverlay('image/6.Trot/koloTKG.png','Тротуарная плитка - Коло - темнокоричневый+желтый')">Темнокоричневый+желтый</button>
         </div>
 
-    <div id="facadeSubMenu" class="submenu">
-        <button onclick="toggleSubMenu('lapsha')">Лапша</button>
-        <button onclick="toggleSubMenu('nabornaya')">Наборная</button>
+     <!--ромб-->
+        <div id="rombSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('trot')">&#x276E; назад</button>
+            <button onclick="addtrotOverlay('image/6.Trot/ROMBbsch.png','Тротуарная плитка - Ромб 3Д - белый+коричневый+черный')">Белый+коричневый+черный</button>
+        </div>
+    <!--исбрук-->
+        <div id="insbrSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu('trot')">&#x276E; назад</button>
+            <button onclick="addtrotOverlay('image/6.Trot/isbrCHBS.png','Тротуарная плитка - Инсбрук - белый(2)+серый(2)+черный(1)')">Белый+серый+черный</button>
+        </div>
+
+<h3></h3>
+ <!--ПРЕСЕТЫ-->
+        <button class="main-btn" data-menu="preset" onclick="toggleSubMenu('preset')">Готовые решения</button>
+        <div id="presetSubMenu" class="submenu">
+            <button class="main-btn" style="background-color: #555; font-weight: bold; color: #fff; " onclick="toggleSubMenu(' ')">&#x276E; назад</button>
+            <button onclick="applyPreset()">Белый+черный</button>
+           
+        </div>
+<h3></h3>
+<div id="info">
+    <div id="infor">Добавленные слои: </div> 
+    <div class="alt-layer" id="alt-krish"></div>
+    <div class="alt-layer" id="alt-window"></div>
+    <div class="alt-layer" id="alt-door"></div>
+    <div class="alt-layer" id="alt-fasad"></div>
+    <div class="alt-layer" id="alt-cokol"></div>
+    <div class="alt-layer" id="alt-trot"></div>
+</div>
+
+</div> <!-- Закрыть ситибар-->
+
+ 
+<!-- ДЕФОЛТ ИЗОБРАЖЕНИЕ-->
+    <div class="image-container">
+        <img src="image/def.png" id="main-image" class="image" alt="Главная картинка">
+        <div id="window-overlay-container" class="window-overlay-container"></div>
+        <div id="door-overlay-container" class="door-overlay-container"></div>
+        <div id="fasad-overlay-container" class="fasad-overlay-container"></div>
+        <div id="cokol-overlay-container" class="cokol-overlay-container"></div>
+        <div id="trot-overlay-container" class="trot-overlay-container"></div>
+        <div id="krish-overlay-container" class="krish-overlay-container"></div>
     </div>
-          <div id="lapshaSubMenu" class="submenu">
-            <button class="menu-button" onclick="addOverlay('image/2P.png')">Желтый</button>
-            <button class="menu-button" onclick="addOverlay('image/3O.png')">Черный</button>
-          </div>
-          <div id="nabornayaSubMenu" class="submenu">
-            <button class="menu-button" onclick="addOverlay('image/2P.png')">Перелив песочный</button>
-            <button class="menu-button" onclick="addOverlay('image/3O.png')">Перелив (черный+белый)</button>
-          </div>
-    </div>
-    
-<div class="image-container">
-<img src="image/6.png" id="main-image" class="image" alt="Главная картинка">
-<div id="overlay-container" class="overlay-container"></div>
-</div> 
-</div>  
+
+</div> <!-- Закрыть окно-->  
+
 <script>
+let currentActiveMenu = null; // Переменная для хранения текущего активного пункта меню
+
 function toggleSubMenu(menu) {
-var subMenus = document.getElementsByClassName('submenu');
-for (var i = 0; i < subMenus.length; i++) {
-if (subMenus[i].id === menu + 'SubMenu') {
-subMenus[i].style.display = 'block';
-} else {
-subMenus[i].style.display = 'none';
+    var subMenus = document.getElementsByClassName('submenu');
+    for (var i = 0; i < subMenus.length; i++) {
+        if (subMenus[i].id === menu + 'SubMenu') {
+            subMenus[i].style.display = 'block';
+        } else {
+            subMenus[i].style.display = 'none';
+        }
+    }
+
+    // Подсвечиваем выбранный пункт меню
+    var selectedButton = document.querySelector('.main-btn[data-menu="' + menu + '"]');
+    if (selectedButton) {
+        // Если мы переходим на другой пункт меню первого уровня, снимаем подсветку с текущего
+        if (currentActiveMenu && currentActiveMenu !== selectedButton) {
+            currentActiveMenu.classList.remove('active');
+        }
+        selectedButton.classList.add('active');
+        currentActiveMenu = selectedButton; // Обновляем текущий активный пункт меню
+    }
 }
+
+
+// Добавьте эту функцию, чтобы удалить подсветку при переходе на другой пункт меню первого уровня
+function removeHighlight() {
+    if (currentActiveMenu) {
+        currentActiveMenu.classList.remove('active');
+        currentActiveMenu = null;
+    }
 }
+
+
+
+// ЗАМЕНА ИЗОБРАЖЕНИЙ И НАЛОЖЕНИЕ
+function addKrishOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('krish-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var altkrish = document.getElementById('alt-krish');
+    altkrish.textContent = altText;
 }
-function addOverlay(imagePath) {
-var overlayContainer = document.getElementById('overlay-container');
-overlayContainer.innerHTML = '';
-var overlayImage = document.createElement('img');
-overlayImage.src = imagePath;
-overlayImage.classList.add('image');
-overlayContainer.appendChild(overlayImage);
+function addWindowOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('window-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var altwindow = document.getElementById('alt-window');
+    altwindow.textContent = altText;
+
 }
+
+function addDoorOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('door-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var altdoor = document.getElementById('alt-door');
+    altdoor.textContent = altText;
+
+}
+
+function addfasadOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('fasad-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var altfasad = document.getElementById('alt-fasad');
+    altfasad.textContent = altText;
+
+}
+function addcokolOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('cokol-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var altcokol = document.getElementById('alt-cokol');
+    altcokol.textContent = altText;
+}
+function addtrotOverlay(imagePath, altText) {
+    var overlayContainer = document.getElementById('trot-overlay-container');
+    overlayContainer.innerHTML = ''; // Очищаем контейнер
+
+    var overlayImage = document.createElement('img');
+    overlayImage.src = imagePath;
+    overlayImage.alt = altText;
+    overlayImage.classList.add('image');
+    overlayContainer.appendChild(overlayImage);
+
+    // Обновляем текст атрибута alt в специальном окне
+    var alttrot = document.getElementById('alt-trot');
+    alttrot.textContent = altText;
+}
+
+//ПРЕСЕТЫ
+function applyPreset() {
+    addtrotOverlay('image/6.Trot/kirpichkub.png', 'Тротуарная плитка - Кирпичик - белый+черный кубик');
+    addKrishOverlay('image/1.Krisha/1k.png', 'Крыша - черная металочерепица');
+    addWindowOverlay('image/2.Okna/temnokorich.png', 'Окна - темнокоричневые');
+    addDoorOverlay('image/3.Dveri/temnokorich.png', 'Дверь - темнокоричневая');
+    addcokolOverlay('image/5.Cokol/F01chern.png', 'Цоколь - Рваный камень - черный');
+    addfasadOverlay('image/4.Fasad/f05beluy.png', 'Фасад - Колотый кирпичик - белый');
+}
+// СМЕНА РЕЖИМА ОКНА
+ var containerSizeState = 'auto'; // Изначально установлено как 'auto'
+
+  function toggleContainerSize() {
+    if (containerSizeState === 'auto') {
+      setContainerWidth('100%');
+      containerSizeState = '100%';
+    } else {
+      setContainerWidth('auto');
+      containerSizeState = 'auto';
+    }
+  }
+
+  function setContainerWidth(value) {
+    document.documentElement.style.setProperty('--container-width', value);
+    updateElementSizes();
+  }
+
+  function updateElementSizes() {
+    var elements = document.querySelectorAll('.image, .window-overlay-container, .door-overlay-container, .fasad-overlay-container, .cokol-overlay-container, .trot-overlay-container');
+    elements.forEach(function(element) {
+      element.style.width = 'var(--container-width)';
+    });
+  }
+
+  // Добавление функциональности разворачивания на весь экран
+    function toggleFullscreen() {
+      var elem = document.documentElement;
+
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Вызов функции при клике на нужный элемент (например, кнопку)
+    var fullscreenButton = document.getElementById('fullscreen-button');
+
+    if (fullscreenButton) {
+      fullscreenButton.addEventListener('click', toggleFullscreen);
+    }
 </script>
 </body>
 </html>
